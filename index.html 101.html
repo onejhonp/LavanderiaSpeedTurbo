@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lavanderia Speed Turbo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet" />
+  <style>
+    /* Reset & base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: url('lavanderia.jpg') no-repeat center center fixed;
+      background-size: cover;
+      min-height: 100vh;
+      color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    /* Overlay com blur e cor */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 80, 20, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: -1;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      align-items: center;
+      padding: 2rem 3rem;
+      background: linear-gradient(90deg, #a8f21e, #4caf50);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+      border-radius: 0 0 40px 40px;
+      position: relative;
+      z-index: 10;
+      color: #153a05;
+      gap: 2rem;
+    }
+
+    /* Logo no header, lado esquerdo */
+    .logo-header {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 0 25px #a8f21e;
+      border: 4px solid #d6ff4a;
+      background: white;
+      flex-shrink: 0;
+    }
+
+    .logo-header img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    header h1 {
+      font-weight: 700;
+      font-size: 3.5rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #0a2601;
+      text-shadow: 1px 1px 4px #c7ff59;
+      flex-grow: 1;
+    }
+
+    /* Slogan - padrão */
+    .slogan-animado {
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: #153a05;
+      max-width: 320px;
+      text-align: center;
+      font-style: italic;
+      animation: glow 3s ease-in-out infinite alternate;
+      user-select: none;
+      background: linear-gradient(135deg, #c7ff59 40%, #87c942 100%);
+      padding: 0.7rem 1.4rem;
+      border-radius: 25px;
+      box-shadow: 0 0 15px #9bcf1c;
+      /* Para garantir que o slogan fique sobre tudo quando fixo */
+      z-index: 9999;
+      transition: all 0.3s ease;
+    }
+
+    /* Efeito de brilho do slogan */
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 5px #d6ff4a;
+        color: #0a2601;
+      }
+
+      to {
+        text-shadow: 0 0 20px #a8f21e;
+        color: #0a2601;
+      }
+    }
+
+    /* Slogan sticky fixo ao topo */
+    .slogan-animado.sticky {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 100%;
+      width: 100%;
+      padding: 1rem 0;
+      border-radius: 0;
+      box-shadow: 0 3px 10px rgba(24, 60, 7, 0.8);
+      animation: none; /* remove animação pra evitar confusão visual */
+      background: #a8f21e;
+      color: #0a2601;
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      text-shadow: none;
+      z-index: 10000;
+    }
+
+    /* Nav moderna */
+    nav {
+      margin-top: 1rem;
+      background: #a8f21e;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 1rem 0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+      font-weight: 600;
+      font-size: 1.2rem;
+      border-radius: 25px 25px 0 0;
+      user-select: none;
+      color: #153a05;
+      z-index: 10;
+      position: relative;
+    }
+
+    nav a {
+      color: #153a05;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 3px;
+      background: #153a05;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover,
+    nav a:focus {
+      color: #0a2601;
+    }
+
+    nav a:hover::after,
+    nav a:focus::after {
+      width: 60%;
+    }
+
+    /* Frase central destaque */
+    .promo-center {
+      max-width: 600px;
+      margin: 3rem auto 2rem;
+      background: linear-gradient(135deg, #a8f21e, #4caf50);
+      border-radius: 40px;
+      padding: 1.5rem 2.5rem;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+      color: #102e00;
+      box-shadow: 0 10px 30px #729c15;
+      user-select: none;
+    }
+
+    /* Seção dos serviços: grid cards */
+    .services-section {
+      margin: 0 auto 5rem;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      padding: 0 2rem;
+    }
+
+    .service-card {
+      background: rgba(24, 60, 7, 0.75);
+      border-radius: 25px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+      padding: 2rem 1.5rem;
+      color: #ccff7c;
+      font-weight: 700;
+      font-size: 1.15rem;
+      text-align: center;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: default;
+      user-select: none;
+    }
+
+    .service-card:hover {
+      transform: translateY(-12px) scale(1.05);
+      box-shadow: 0 15px 40px #a8f21e;
+    }
+
+    /* Contato */
+    .contact-section {
+      background: rgba(0, 100, 20, 0.9);
+      padding: 3rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      max-width: 1100px;
+      margin: 0 auto 6rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      color: #caff6a;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    .contact-box {
+      flex: 1 1 280px;
+      background: rgba(40, 80, 10, 0.85);
+      border-radius: 20px;
+      padding: 1.8rem 1.2rem;
+      box-shadow: 0 5px 15px #a7d32c;
+      user-select: text;
+      transition: background 0.3s ease;
+    }
+
+    .contact-box:hover {
+      background: rgba(40, 90, 20, 1);
+    }
+
+    .contact-box h3 {
+      margin-bottom: 1rem;
+      color: #d1ff5c;
+      font-size: 1.3rem;
+      text-shadow: 0 0 5px #9bbd07;
+    }
+
+    .contact-box a {
+      color: #b2ff70;
+      text-decoration: none;
+    }
+
+    .contact-box a:hover {
+      text-decoration: underline;
+      color: #f0ffa6;
+    }
+
+    /* Imagens - estilo cards */
+    .images-section {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 4rem;
+      padding: 0 1rem;
+      flex-wrap: wrap;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .image-card {
+      flex: 1 1 280px;
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(24, 60, 7, 0.8);
+      cursor: pointer;
+      transition: transform 0.4s ease;
+      border: 4px solid #a8f21e;
+    }
+
+    .image-card:hover {
+      transform: scale(1.1);
+      box-shadow: 0 15px 45px #d6ff4a;
+    }
+
+    .image-card img {
+      width: 100%;
+      height: 190px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Footer com contraste forte */
+    footer {
+      background: #0c2901;
+      color: #a8f21e;
+      padding: 1.5rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: center;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.9);
+    }
+
+    /* Botões flutuantes redes sociais */
+    .floating-buttons {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      z-index: 100;
+    }
+
+    .floating-buttons a {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #25d366, #1da1f2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    .floating-buttons a:nth-child(1) {
+      background: #25d366;
+    }
+
+    .floating-buttons a:nth-child(2) {
+      background: #e1306c;
+    }
+
+    .floating-buttons a:hover {
+      transform: scale(1.15);
+    }
+
+    .floating-buttons img {
+      width: 36px;
+      height: 36px;
+      filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+    }
+
+    /* Responsividade */
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+        border-radius: 0 0 25px 25px;
+      }
+
+      .logo-header {
+        width: 120px;
+        height: 120px;
+      }
+
+      .slogan-animado {
+        max-width: 100%;
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        border-radius: 0;
+      }
+
+      .contact-section {
+        flex-direction: column;
+        padding: 2rem 1rem;
+      }
+
+      .contact-box {
+        width: 100%;
+        margin-bottom: 1rem;
+      }
+
+      .promo-center {
+        margin: 2rem 1rem 1rem;
+        font-size: 1.4rem;
+        padding: 1rem 1.5rem;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-header">
+      <img src="fundoo.jpg" alt="Logo Speed Turbo" />
+    </div>
+    <h1>Lavanderia Speed Turbo</h1>
+    <div class="slogan-animado" id="slogan">
+      Roupas limpas, cheirosas e prontas para você brilhar!
+    </div>
+  </header>
+
+  <nav>
+    <a href="#">Início</a>
+    <a href="#">Sobre</a>
+  </nav>
+
+  <main>
+    <div class="promo-center">
+      ECONOMIZE TEMPO E DINHEIRO,<br />
+      Revolucione sua rotina com a lavanderia de auto serviço mais prática de ÁGUAS CLARAS!
+    </div>
+
+    <section class="services-section">
+      <div class="service-card">🚀 Lavagem Expressa - Rápido e eficiente, seu tempo é precioso!</div>
+      <div class="service-card">🌿 Equipamentos modernos que cuidam do seu tecido com carinho.</div>
+      <div class="service-card">💰 Preços justos para serviços premium.</div>
+      <div class="service-card">✨ Higienização completa com cheirinho de frescor e cuidado.</div>
+    </section>
+
+    <section class="contact-section">
+      <div class="contact-box" style="flex: 1 1 100%;">
+        <h3>Localização</h3>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3879.2341948222817!2d-38.47380168523804!3d-12.988142490879146!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x716e4fa9f6e416c%3A0x50d26e4b01e8257f!2sRua%20Dr.%20Jorge%20Costa%20Andrade%2C%2042%2C%20Salvador%20-%20BA%2C%2041310-260!5e0!3m2!1spt-BR!2sbr!4v1686760233341!5m2!1spt-BR!2sbr"
+          width="100%" height="200" style="border:0; border-radius:15px;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+      <div class="contact-box">
+        <h3>Avaliações</h3>
+        <p>⭐️⭐️⭐️⭐️⭐️ "Atendimento rápido e eficiente!"</p>
+        <p>⭐️⭐️⭐️⭐️⭐️ "Minha roupa ficou impecável, recomendo muito!"</p>
+        <p>⭐️⭐️⭐️⭐️⭐️ "Pontualidade e qualidade que me conquistaram."</p>
+        <p>⭐️⭐️⭐️⭐️⭐️ "Ótimo custo-benefício e atendimento simpático."</p>
+        <p>⭐️⭐️⭐️⭐️⭐️ "Simplesmente a melhor lavanderia da região!"</p>
+      </div>
+    </section>
+
+    <section class="images-section">
+      <div class="image-card">
+        <img src="imagem1.png" alt="Imagem 1" />
+      </div>
+      <div class="image-card">
+        <img src="imagem2.png" alt="Imagem 2" />
+      </div>
+      <div class="image-card">
+        <img src="imagem3.png" alt="Imagem 3" />
+      </div>
+    </section>
+  </main>
+
+  <div class="floating-buttons">
+    <a href="https://wa.me/5571999999999" target="_blank" title="WhatsApp">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" />
+    </a>
+    <a href="https://instagram.com/lavanderiaspeedturbo" target="_blank" title="Instagram">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" />
+    </a>
+  </div>
+
+  <footer>
+    &copy; 2025 Lavanderia Speed Turbo. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Quando a página rolar, adiciona ou remove a classe sticky no slogan
+    window.addEventListener('scroll', () => {
